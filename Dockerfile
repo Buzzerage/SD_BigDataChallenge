@@ -17,7 +17,14 @@ RUN apt-get update \
     && apt-cache search linux-headers-generic
 
 COPY requirements.txt requirements.txt
-RUN pip install --upgrade pip setuptools six && pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip setuptools six && \
+pip install \
+--upgrade pip \
+urllib3==1.24.2 \
+lithops \
+tweepy \
+vaderSentiment \
+requests
 
 # create action working directory
 RUN mkdir -p /action \

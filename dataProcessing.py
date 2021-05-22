@@ -3,7 +3,7 @@ import json
 import time
 import lithops
 from lithops.multiprocessing import Pool
-#from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 def f(data):
     review = json.loads(data)
