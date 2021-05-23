@@ -16,11 +16,11 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && apt-cache search linux-headers-generic
 
-COPY requirements.txt requirements.txt
-RUN pip install --upgrade pip setuptools six && \
+RUN pip install --upgrade pip six && \
 pip install \
 --upgrade pip \
 urllib3==1.24.2 \
+setuptools \
 lithops \
 tweepy \
 vaderSentiment \
