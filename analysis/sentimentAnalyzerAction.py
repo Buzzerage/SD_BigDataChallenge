@@ -3,9 +3,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import json
 import lithops
 from ast import literal_eval
-from lithops.multiprocessing import Pool
 from lithops import Storage,storage
-from geopy.geocoders import Nominatim
 
 def analyzer(index):
     stg = Storage()
