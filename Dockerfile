@@ -24,7 +24,12 @@ setuptools \
 lithops \
 tweepy \
 vaderSentiment \
-requests
+requests \
+geopy \
+matplotlib
+
+COPY requirements.txt requirements.txt
+RUN pip install --upgrade pip setuptools six && pip install --no-cache-dir -r requirements.txt
 
 # create action working directory
 RUN mkdir -p /action \

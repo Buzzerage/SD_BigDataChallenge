@@ -8,6 +8,6 @@ if __name__ == '__main__':
 
     obj_key = 'filename'
     storage = Storage()
-    obj_id = storage.put_cloudobject('', 'analysis.data', obj_key)
+    obj_id = storage.put_cloudobject('', 'analysis.data', filename)
     print(obj_id)
 
