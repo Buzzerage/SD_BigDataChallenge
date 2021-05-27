@@ -47,10 +47,14 @@ def main(args):
     notCalibrated = True
     secondFile = False
 
-    finalCSV = ""
     fexec = lithops.FunctionExecutor()
     try:
-        csv_reader = stg.get_object('analysis.data', 'rawdata/datasets/tweetid1.csv').decode()
+        finalCSV = stg.get_object('analysis.data', 'processeddata/sentiments2.csv').decode()
+    except storage.utils.StorageNoSuchKeyError:
+        finalCSV = ""
+
+    try:
+        csv_reader = stg.get_object('analysis.data', 'rawdata/datasets/englishTweetsLarge.csv').decode()
 
         csv_reader = csv_reader.split("\n")
         for row in csv_reader:
@@ -75,13 +79,11 @@ def main(args):
                         isRetweet = False
 
                     # CSV format
-                    fexec.call_async(analyzer, text)
-                    sentiment = fexec.get_result()
+                    sentiment = analyzer(text)
                     finalCSV += str(id)+","+str(date)+","+str(isRetweet)+","+str(location)+","+str(sentiment)+"\n"
-                    print(finalCSV+"\n")
                     savedTweets+=1
 
-                    if((savedTweets % 1000) == 0):
+                    if((savedTweets % 300) == 0):
                         stg.put_cloudobject(finalCSV, 'analysis.data', 'processeddata/sentiments2.csv')
                         stg.put_cloudobject(str(line+1)+','+str(savedTweets), 'analysis.data', 'config/counting2.txt')
 
@@ -89,12 +91,9 @@ def main(args):
                     pass
 
             line += 1
-
     except storage.utils.StorageNoSuchKeyError:
         status = 1
 
     return {
         'errorStatus': status
     }
-
-main(2)
