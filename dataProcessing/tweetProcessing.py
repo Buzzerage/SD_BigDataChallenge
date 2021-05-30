@@ -35,72 +35,40 @@ def dataProcessing(data):
             else:
                 sentiment.append(literal_eval(str(vs))['compound'])
         except IndexError:
-            nonProcessed.append("ee")
+            pass
 
     return sentiment
 
+if __name__ == '__main__':
+    stg = Storage()
+    try:
+        data = stg.get_object('analysis.data', 'processeddata/sentimentsWithText.csv').decode()
+        data = str(data).splitlines()
 
-stg = Storage()
-try:
-    nonProcessed = []
-    data = stg.get_object('analysis.data', 'processeddata/sentimentsWithText.csv').decode()
-    data = str(data).splitlines()
-    #data[0] = flat_map(lambda x: x, data[0].split(',')[4:])
-    #data[0] = str.removeprefix(data[0],'Text')
-    print(len(data))
-    '''
-    full_text = []
-    for line in data:
-        try:
-            sepLine = line.split(',')
-            full_text.append(sepLine[:-1])
-        except IndexError:
-            nonProcessed.append(line)
-    '''
-    '''
-    csv_text = csv.reader(data, delimiter=',')
-    full_text = []
-    for line in  csv_text:
-        try:
-            full_text.append(line[-1])        # Array of tweet text
-        except IndexError:
-            nonProcessed.append(line)
-    '''
-    '''
-    print("##################")
-    print(len(full_text)+len(nonProcessed))
-    data_length = len(full_text)         # Number of tweets
-    partitions = 10
-    incr = data_length // partitions
-    '''
-    data_length = len(data)         # Number of tweets
-    partitions = 10
-    incr = data_length // partitions
-    result = []
-    dicc_result = []
+        print(len(data))
+        data_length = len(data)         # Number of tweets
+        partitions = 10
+        incr = data_length // partitions
+        result = []
+        dicc_result = []
 
-    j = 0
-    with Pool() as pool:
-        for i in range(0, data_length, incr):
-            dicc_result = data[j:i]
-            result.append(dicc_result)
-            j = i
-        if (data_length%incr != 0):       # Include remains
-            result.append(data[data_length-data_length%incr:])
-        print("eeeeeee")
-        a=0
-        for i in result:
-            a+=len(i)
-        print(a)
-        p = pool.map(dataProcessing, result)
-        p = flat_map(lambda x: x, p)
+        j = 0
+        with Pool() as pool:
+            for i in range(1, data_length, incr):
+                dicc_result = data[j:i]
+                result.append(dicc_result)
+                j = i
+            if (data_length%incr != 0):       # Include remains
+                result.append(data[data_length-data_length%incr:])
 
-        for i in range(len(p)):
-            data[i] = data[i][:-1]+','+str(p[i])+'\n'
+            p = pool.map(dataProcessing, result)
+            p = flat_map(lambda x: x, p)
 
-        #print(data)
-    # stg.put_object('analysis.data', data)
-except storage.utils.StorageNoSuchKeyError:
-        exit()
+            for i in range(1,len(p)):
+                data[i] = data[i][:-1]+','+str(p[i])+'\n'
 
-
+        data[0] = "Id,Date,Retweet,location,Text,Sentiment\n"
+        data = "".join(data)
+        stg.put_cloudobject(data, 'analysis.data', 'processeddata/sentimentsData.csv')
+    except storage.utils.StorageNoSuchKeyError:
+            exit()

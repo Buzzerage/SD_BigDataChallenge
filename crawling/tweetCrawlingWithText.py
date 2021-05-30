@@ -72,7 +72,7 @@ def main(args):
                         isRetweet = False
 
                     # CSV format
-                    finalCSV += str(id)+","+str(date)+","+str(isRetweet)+","+str(location)+','+str(text.replace(",","").replace("\n",""))+"\n"
+                    finalCSV += str(id)+","+str(date)+","+str(isRetweet)+","+str(location.replace(",","").replace("\n",""))+','+str(text.replace(",","").replace("\n",""))+"\n"
                     savedTweets+=1
                     print(row)
                     if((savedTweets % 300) == 0):
