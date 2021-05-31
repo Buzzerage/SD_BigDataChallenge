@@ -45,7 +45,6 @@ if __name__ == '__main__':
         data = stg.get_object('analysis.data', 'processeddata/sentimentsWithText.csv').decode()
         data = str(data).splitlines()
 
-        print(len(data))
         data_length = len(data)         # Number of tweets
         partitions = 10
         incr = data_length // partitions
@@ -54,17 +53,18 @@ if __name__ == '__main__':
 
         j = 0
         with Pool() as pool:
-            for i in range(1, data_length, incr):
+            for i in range(1, data_length+1, incr):
                 dicc_result = data[j:i]
                 result.append(dicc_result)
                 j = i
             if (data_length%incr != 0):       # Include remains
-                result.append(data[data_length-data_length%incr:])
+                dicc_result = data[data_length-data_length%incr:]
+                result.append(dicc_result)
 
             p = pool.map(dataProcessing, result)
             p = flat_map(lambda x: x, p)
 
-            for i in range(1,len(p)):
+            for i in range(1,len(p)-1):
                 data[i] = data[i][:-1]+','+str(p[i])+'\n'
 
         data[0] = "Id,Date,Retweet,location,Text,Sentiment\n"
