@@ -5,19 +5,10 @@ from lithops import Storage,storage
 
 def main(args):
     status = 0
-    config = {
-        'lithops': {'storage': 'ibm_cos', 'storage_bucket': 'analysis.data'},
-        'serverless': {'backend': 'ibm_cf'},
-        'ibm_cf': {'endpoint': 'https://us-south.functions.cloud.ibm.com', 'namespace': 'david.gaseni@estudiants.urv.cat_dev', 'api_key': '0eb6aaa1-cbfa-4a40-ba3f-8dce99c0d50f:KJaG8bSt2o1LDVCC4tdMhMsudV4ECV2FYgz3w7bjKS2nuOzKZNRBJDJgTBaTvzjz'},
-        'ibm_cos': {'endpoint': 'https://s3.eu-gb.cloud-object-storage.appdomain.cloud', 'private_endpoint': 'https://s3.private.eu-gb.cloud-object-storage.appdomain.cloud', 'access_key': 'eb93f6c095ec4c08b817ab1b8434482b', 'secret_key': 'b2c10ef5e2f2ffa5fdf4b1512ae5fd4b83ae2489c6d82149'}
-    }
-
-    auth = tweepy.OAuthHandler("PAUnJlWmtF3bbmOgZ8V52PjKy", "6ZUU0hv6FgbcEfjfi8UJNNUwOHJPWd2bHnallsJ6KHVHNeEEq0")
-    auth.set_access_token("2387833430-O9jlFNZBnyTMZ3lc6M1tYORglvE8pvQQ5SvsGMI", "5JWcboBlHdIZdcR2P6r7zc9ihnwd2hEgf03fsm8xyX3AF")
-
-    api = tweepy.API(auth, wait_on_rate_limit=True)
-
-    tweet = {}
+    
+    '''
+    API credentials and runtime config to be specified.
+    '''
 
     # Tweet crawling
     ## Line counter
